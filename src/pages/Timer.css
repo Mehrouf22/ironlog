@@ -1,0 +1,132 @@
+/* Timer Page */
+
+.timer-section {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: var(--space-6);
+  margin-bottom: var(--space-4);
+}
+
+.section-label {
+  font-size: 0.6875rem;
+  font-weight: 600;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: var(--text-muted);
+  align-self: flex-start;
+}
+
+/* Ring */
+.timer-ring-wrap {
+  position: relative;
+  width: 200px;
+  height: 200px;
+}
+
+.timer-ring {
+  transform: rotate(0deg);
+}
+
+.ring-bg {
+  fill: none;
+  stroke: var(--border-light);
+  stroke-width: 6;
+}
+
+.ring-fill {
+  fill: none;
+  stroke: var(--accent);
+  stroke-width: 6;
+  stroke-linecap: round;
+}
+
+.timer-digits {
+  position: absolute;
+  inset: 0;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  font-family: var(--font-mono);
+  font-size: 2.5rem;
+  font-weight: 500;
+  color: var(--text-primary);
+  letter-spacing: 0.05em;
+}
+
+.timer-done {
+  font-size: 0.75rem;
+  color: var(--accent);
+  margin-top: var(--space-1);
+  font-family: var(--font-body);
+}
+
+/* Presets */
+.timer-presets {
+  display: flex;
+  gap: var(--space-2);
+}
+
+.preset-btn {
+  padding: var(--space-2) var(--space-4);
+  background: var(--bg-card);
+  border: 1px solid var(--border);
+  border-radius: var(--radius-sm);
+  font-family: var(--font-mono);
+  font-size: 0.875rem;
+  color: var(--text-secondary);
+  cursor: pointer;
+  transition: var(--transition);
+}
+
+.preset-btn:hover { border-color: var(--border-light); color: var(--text-primary); }
+
+.preset-btn--active {
+  border-color: var(--accent);
+  color: var(--accent);
+  background: var(--accent-subtle);
+}
+
+/* Controls */
+.timer-controls {
+  display: flex;
+  gap: var(--space-3);
+  align-items: center;
+}
+
+/* Stopwatch display */
+.sw-display {
+  font-family: var(--font-mono);
+  font-size: 3rem;
+  font-weight: 500;
+  color: var(--text-primary);
+  letter-spacing: 0.05em;
+  padding: var(--space-8) 0;
+}
+
+/* Laps */
+.sw-laps {
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-2);
+}
+
+.sw-lap-row {
+  display: flex;
+  justify-content: space-between;
+  padding: var(--space-2) 0;
+  border-bottom: 1px solid var(--border);
+}
+
+.sw-lap-num {
+  font-size: 0.8125rem;
+  color: var(--text-muted);
+}
+
+.sw-lap-time {
+  font-family: var(--font-mono);
+  font-size: 0.875rem;
+  color: var(--text-primary);
+}

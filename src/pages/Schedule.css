@@ -1,0 +1,67 @@
+/* Schedule Page */
+
+.split-list {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-3);
+}
+
+.split-row {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-3);
+}
+
+.split-row--today {
+  border-color: var(--accent);
+  background: var(--accent-subtle);
+}
+
+.split-day {
+  display: flex;
+  align-items: center;
+  gap: var(--space-3);
+}
+
+.split-day-name {
+  font-family: var(--font-display);
+  font-weight: 600;
+  font-size: 1rem;
+  color: var(--text-primary);
+  width: 36px;
+}
+
+.split-picker {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--space-2);
+}
+
+.type-pill {
+  padding: var(--space-1) var(--space-3);
+  background: var(--bg-elevated);
+  border: 1px solid var(--border);
+  border-radius: var(--radius-sm);
+  font-size: 0.8125rem;
+  color: var(--text-muted);
+  cursor: pointer;
+  transition: var(--transition);
+  font-family: var(--font-body);
+}
+
+.type-pill:hover {
+  border-color: var(--border-light);
+  color: var(--text-secondary);
+}
+
+.type-pill--active {
+  background: var(--accent-subtle);
+  border-color: var(--accent);
+  color: var(--accent);
+}
+
+.type-pill--rest.type-pill--active {
+  background: rgba(68, 68, 68, 0.15);
+  border-color: var(--text-muted);
+  color: var(--text-muted);
+}

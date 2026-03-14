@@ -1,0 +1,201 @@
+/* Dashboard Styles */
+
+.dashboard { }
+
+.dash-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: var(--space-8);
+}
+
+.dash-greeting {
+  font-size: 0.9375rem;
+  color: var(--text-secondary);
+  margin-bottom: var(--space-1);
+}
+
+.dash-name {
+  color: var(--text-primary);
+  font-weight: 600;
+}
+
+.dash-date {
+  font-size: 0.8125rem;
+  color: var(--text-muted);
+  letter-spacing: 0.02em;
+}
+
+.dash-avatar {
+  width: 40px;
+  height: 40px;
+  background: var(--accent-subtle);
+  border: 1px solid var(--accent-dim);
+  color: var(--accent);
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-family: var(--font-display);
+  font-weight: 700;
+  font-size: 1rem;
+  flex-shrink: 0;
+  text-decoration: none;
+  transition: var(--transition);
+}
+
+.dash-avatar:hover {
+  background: var(--accent);
+  color: #fff;
+}
+
+/* Section */
+.dash-section {
+  margin-bottom: var(--space-2);
+}
+
+.dash-section__label {
+  font-size: 0.6875rem;
+  font-weight: 600;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: var(--text-muted);
+  margin-bottom: var(--space-4);
+}
+
+/* Day Selector */
+.day-selector {
+  display: flex;
+  gap: var(--space-2);
+  flex-wrap: wrap;
+}
+
+.day-pill {
+  padding: var(--space-2) var(--space-3);
+  background: var(--bg-card);
+  border: 1px solid var(--border);
+  border-radius: var(--radius-sm);
+  font-size: 0.8125rem;
+  color: var(--text-secondary);
+  cursor: pointer;
+  transition: var(--transition);
+  font-family: var(--font-body);
+}
+
+.day-pill:hover {
+  border-color: var(--border-light);
+  color: var(--text-primary);
+}
+
+.day-pill--active {
+  background: var(--accent-subtle);
+  border-color: var(--accent);
+  color: var(--accent);
+}
+
+/* Stats Grid */
+.stats-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: var(--space-3);
+}
+
+.stat-card {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-2);
+}
+
+.stat-sub {
+  font-size: 0.75rem;
+  color: var(--text-muted);
+  margin: 0;
+}
+
+/* Progress Bar */
+.progress-bar {
+  height: 3px;
+  background: var(--border);
+  border-radius: 2px;
+  overflow: hidden;
+  margin-top: var(--space-2);
+}
+
+.progress-bar__fill {
+  height: 100%;
+  background: var(--accent);
+  border-radius: 2px;
+  transition: width 0.8s ease;
+}
+
+.progress-bar__fill--blue   { background: #3a9bd5; }
+.progress-bar__fill--green  { background: #2e7d52; }
+
+/* Health Grid */
+.health-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: var(--space-3);
+}
+
+.health-card {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-3);
+}
+
+.health-card__top {
+  display: flex;
+  align-items: center;
+  gap: var(--space-3);
+}
+
+.health-icon {
+  font-size: 1.25rem;
+  flex-shrink: 0;
+}
+
+.stat-unit {
+  font-size: 0.875rem;
+  color: var(--text-muted);
+  font-weight: 400;
+}
+
+/* Quick Access Grid */
+.quick-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: var(--space-3);
+}
+
+.quick-card {
+  display: flex;
+  align-items: center;
+  gap: var(--space-3);
+  padding: var(--space-4);
+  text-decoration: none;
+  cursor: pointer;
+}
+
+.quick-card:hover {
+  background: var(--bg-elevated);
+  border-color: var(--border-light);
+}
+
+.quick-card__icon {
+  font-size: 1.25rem;
+  flex-shrink: 0;
+}
+
+.quick-card__label {
+  font-size: 0.875rem;
+  font-weight: 500;
+  color: var(--text-primary);
+  font-family: var(--font-display);
+  margin-bottom: 2px;
+}
+
+.quick-card__desc {
+  font-size: 0.75rem;
+  color: var(--text-muted);
+}

@@ -1,0 +1,100 @@
+/* PRs Page */
+
+.pr-filters {
+  display: flex;
+  gap: var(--space-2);
+  flex-wrap: wrap;
+  margin-bottom: var(--space-6);
+}
+
+.pr-list {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-3);
+}
+
+.pr-card { }
+
+.pr-card__top {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  margin-bottom: var(--space-3);
+}
+
+.pr-exercise {
+  font-size: 1rem;
+  font-weight: 600;
+  margin-bottom: var(--space-2);
+}
+
+.pr-weight {
+  display: flex;
+  align-items: baseline;
+  gap: var(--space-1);
+}
+
+.pr-num {
+  font-family: var(--font-display);
+  font-size: 2rem;
+  font-weight: 700;
+  color: var(--accent);
+  line-height: 1;
+}
+
+.pr-unit {
+  font-size: 0.875rem;
+  color: var(--text-muted);
+}
+
+.pr-card__bottom {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.pr-date {
+  font-size: 0.8125rem;
+  color: var(--text-muted);
+  font-family: var(--font-mono);
+}
+
+.empty-state {
+  text-align: center;
+  padding: var(--space-16) 0;
+}
+
+.empty-state p:first-child {
+  font-size: 1rem;
+  color: var(--text-secondary);
+  margin-bottom: var(--space-2);
+}
+
+.empty-state p:last-child {
+  font-size: 0.875rem;
+  color: var(--text-muted);
+}
+
+/* Re-use day-pill from index.css context */
+.day-pill {
+  padding: var(--space-2) var(--space-3);
+  background: var(--bg-card);
+  border: 1px solid var(--border);
+  border-radius: var(--radius-sm);
+  font-size: 0.8125rem;
+  color: var(--text-secondary);
+  cursor: pointer;
+  transition: var(--transition);
+  font-family: var(--font-body);
+}
+
+.day-pill:hover {
+  border-color: var(--border-light);
+  color: var(--text-primary);
+}
+
+.day-pill--active {
+  background: var(--accent-subtle);
+  border-color: var(--accent);
+  color: var(--accent);
+}

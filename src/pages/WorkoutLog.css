@@ -1,0 +1,168 @@
+/* Workout Log Styles */
+
+.page-header {
+  margin-bottom: var(--space-8);
+}
+
+.page-header h1 {
+  margin-bottom: var(--space-4);
+}
+
+.day-badges {
+  display: flex;
+  gap: var(--space-2);
+  flex-wrap: wrap;
+}
+
+.exercise-list {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-4);
+}
+
+.exercise-card {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-4);
+}
+
+.exercise-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.exercise-header h3 {
+  font-size: 1rem;
+  font-weight: 600;
+}
+
+.btn-icon {
+  width: 28px;
+  height: 28px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: var(--text-muted);
+  font-size: 0.8125rem;
+  border-radius: var(--radius-sm);
+  background: var(--bg-elevated);
+  border: none;
+  cursor: pointer;
+  transition: var(--transition);
+}
+
+.btn-icon:hover { color: var(--danger); }
+
+/* Sets Table */
+.sets-table {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-2);
+}
+
+.sets-row {
+  display: grid;
+  grid-template-columns: 32px 1fr 1fr 36px;
+  gap: var(--space-2);
+  align-items: center;
+  transition: var(--transition);
+}
+
+.sets-row--head {
+  font-size: 0.6875rem;
+  color: var(--text-muted);
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  font-weight: 500;
+}
+
+.sets-row--done {
+  opacity: 0.45;
+}
+
+.set-num {
+  font-size: 0.8125rem;
+  color: var(--text-muted);
+  font-family: var(--font-mono);
+  text-align: center;
+}
+
+.set-input {
+  padding: var(--space-2) var(--space-2);
+  text-align: center;
+  font-family: var(--font-mono);
+  font-size: 0.9375rem;
+  background: var(--bg-elevated);
+  border: 1px solid var(--border);
+  border-radius: var(--radius-sm);
+  color: var(--text-primary);
+  width: 100%;
+  appearance: textfield;
+}
+
+.set-input:focus {
+  border-color: var(--accent);
+  box-shadow: 0 0 0 2px var(--accent-glow);
+  outline: none;
+}
+
+input[type=number]::-webkit-outer-spin-button,
+input[type=number]::-webkit-inner-spin-button {
+  -webkit-appearance: none;
+  margin: 0;
+}
+
+.check-btn {
+  width: 32px;
+  height: 32px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 50%;
+  border: 1px solid var(--border-light);
+  background: var(--bg-elevated);
+  color: var(--text-muted);
+  font-size: 0.75rem;
+  cursor: pointer;
+  transition: var(--transition);
+}
+
+.check-btn--done {
+  background: var(--accent);
+  border-color: var(--accent);
+  color: #fff;
+}
+
+/* Exercise Picker */
+.exercise-picker {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--space-2);
+}
+
+.ex-pill {
+  padding: var(--space-2) var(--space-3);
+  background: var(--bg-elevated);
+  border: 1px solid var(--border);
+  border-radius: var(--radius-sm);
+  font-size: 0.8125rem;
+  color: var(--text-secondary);
+  cursor: pointer;
+  transition: var(--transition);
+  font-family: var(--font-body);
+}
+
+.ex-pill:hover {
+  border-color: var(--accent);
+  color: var(--accent);
+}
+
+/* Reuse dash styles */
+.dash-section__label {
+  font-size: 0.6875rem;
+  font-weight: 600;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: var(--text-muted);
+}
