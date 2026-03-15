@@ -1,0 +1,69 @@
+@font-face {
+  font-family: 'Neotriads';
+  src: url('/Neotriad.otf') format('opentype');
+  font-weight: normal;
+  font-style: normal;
+}
+
+.loading-screen {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 100vh;
+  min-height: 100dvh;
+  /* Use the brand orange given to our app */
+  background-color: var(--accent); 
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  z-index: 9999;
+  /* Fades out smoothly at the end of the timeout */
+  animation: fadeOutLoad 0.4s ease 2.1s forwards;
+}
+
+.loading-content {
+  flex: 1;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.loading-title {
+  /* Use custom specified font! */
+  font-family: 'Neotriads', var(--font-display);
+  font-size: clamp(3rem, 12vw, 5rem);
+  font-weight: 700;
+  color: #000; /* Text gotta be black */
+  letter-spacing: 0.05em;
+  text-transform: uppercase;
+  margin: 0;
+  animation: pulseLoad 1.5s infinite alternate;
+}
+
+.loading-footer {
+  padding-bottom: 2rem;
+}
+
+.loading-footer p {
+  color: #000; /* Text gotta be black */
+  font-family: var(--font-body);
+  font-weight: 600;
+  font-size: 0.85rem;
+  letter-spacing: 0.1em;
+  margin: 0;
+  opacity: 0.8;
+}
+
+@keyframes pulseLoad {
+  0% { transform: scale(1); opacity: 0.9; }
+  100% { transform: scale(1.05); opacity: 1; }
+}
+
+@keyframes fadeOutLoad {
+  to {
+    opacity: 0;
+    pointer-events: none;
+  }
+}

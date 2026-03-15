@@ -4,22 +4,37 @@ import './Nutrition.css'
 const MEALS = ['Breakfast', 'Lunch', 'Dinner', 'Snack']
 
 const DEMO_FOOD = {
-  Breakfast: [
-    { name: 'Oatmeal', kcal: 300, protein: 10, carbs: 55, fat: 5 },
-    { name: 'Eggs (3)', kcal: 210, protein: 18, carbs: 1, fat: 15 },
-  ],
-  Lunch: [
-    { name: 'Chicken Rice', kcal: 520, protein: 44, carbs: 60, fat: 8 },
-  ],
+  Breakfast: [],
+  Lunch: [],
   Dinner: [],
-  Snack: [{ name: 'Whey Protein', kcal: 120, protein: 25, carbs: 3, fat: 2 }],
+  Snack: [],
 }
 
 const GOALS = { kcal: 2400, protein: 160, carbs: 250, fat: 70 }
 
 export default function Nutrition() {
-  const [log, setLog] = useState(DEMO_FOOD)
-  const [water, setWater] = useState(5)
+  const [log, setLog] = useState(() => {
+    try {
+      const saved = localStorage.getItem('il_nutrition_log')
+      const today = new Date().toISOString().slice(0, 10)
+      const data = saved ? JSON.parse(saved) : null
+      if (data && data.date === today) return data.log
+      return DEMO_FOOD
+    } catch {
+      return DEMO_FOOD
+    }
+  })
+  const [water, setWater] = useState(() => {
+    try {
+      const saved = localStorage.getItem('il_nutrition_water')
+      const today = new Date().toISOString().slice(0, 10)
+      const data = saved ? JSON.parse(saved) : null
+      if (data && data.date === today) return data.water
+      return 0
+    } catch {
+      return 0
+    }
+  })
   const [waterGoal] = useState(8)
   const [adding, setAdding] = useState(null)
   const [form, setForm] = useState({ name: '', kcal: '', protein: '', carbs: '', fat: '' })
@@ -36,27 +51,55 @@ export default function Nutrition() {
 
   function addFood() {
     if (!form.name || !form.kcal) return
-    setLog(l => ({
-      ...l,
-      [adding]: [...l[adding], {
+    const newLog = {
+      ...log,
+      [adding]: [...log[adding], {
         name: form.name,
         kcal: +form.kcal,
         protein: +form.protein || 0,
         carbs: +form.carbs || 0,
         fat: +form.fat || 0,
       }]
-    }))
+    }
+    setLog(newLog)
+    localStorage.setItem('il_nutrition_log', JSON.stringify({ date: new Date().toISOString().slice(0, 10), log: newLog }))
+    
     setForm({ name: '', kcal: '', protein: '', carbs: '', fat: '' })
     setAdding(null)
+  }
+
+  function handleSetWater(fn) {
+     const newWater = typeof fn === 'function' ? fn(water) : fn
+     setWater(newWater)
+     localStorage.setItem('il_nutrition_water', JSON.stringify({ date: new Date().toISOString().slice(0, 10), water: newWater }))
+  }
+
+  function removeFood(meal, index) {
+    const newMealList = log[meal].filter((_, i) => i !== index)
+    const newLog = { ...log, [meal]: newMealList }
+    setLog(newLog)
+    localStorage.setItem('il_nutrition_log', JSON.stringify({ date: new Date().toISOString().slice(0, 10), log: newLog }))
+  }
+
+  function resetNutrition() {
+    if (confirm("Are you sure you want to reset today's nutrition?")) {
+      setLog(DEMO_FOOD)
+      setWater(0)
+      localStorage.setItem('il_nutrition_log', JSON.stringify({ date: new Date().toISOString().slice(0, 10), log: DEMO_FOOD }))
+      localStorage.setItem('il_nutrition_water', JSON.stringify({ date: new Date().toISOString().slice(0, 10), water: 0 }))
+    }
   }
 
   return (
     <div className="nutrition-page page">
       <div className="container">
 
-        <header className="page-header">
-          <h1>Nutrition</h1>
-          <p style={{ marginTop: '0.5rem' }}>Fuel matters as much as iron.</p>
+        <header className="page-header" style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-start' }}>
+          <div>
+            <h1>Nutrition</h1>
+            <p style={{ marginTop: '0.5rem' }}>Fuel matters as much as iron.</p>
+          </div>
+          <button className="btn btn-ghost btn-sm" onClick={resetNutrition}>Reset Today</button>
         </header>
 
         {/* Macro summary */}
@@ -83,13 +126,13 @@ export default function Nutrition() {
               <button
                 key={i}
                 className={`water-dot ${i < water ? 'water-dot--filled' : ''}`}
-                onClick={() => setWater(i < water ? i : i + 1)}
+                onClick={() => handleSetWater(i < water ? i : i + 1)}
               />
             ))}
           </div>
           <div className="water-btns">
-            <button className="btn btn-ghost btn-sm" onClick={() => setWater(w => Math.max(0, w - 1))}>−</button>
-            <button className="btn btn-primary btn-sm" onClick={() => setWater(w => Math.min(waterGoal, w + 1))}>+ Cup</button>
+            <button className="btn btn-ghost btn-sm" onClick={() => handleSetWater(w => Math.max(0, w - 1))}>−</button>
+            <button className="btn btn-primary btn-sm" onClick={() => handleSetWater(w => Math.min(waterGoal, w + 1))}>+ Cup</button>
           </div>
         </div>
 
@@ -112,6 +155,7 @@ export default function Nutrition() {
                     <span className="food-macros">
                       <span>{food.kcal}kcal</span>
                       <span>{food.protein}g P</span>
+                      <button className="btn btn-text btn-sm" style={{ marginLeft: '0.5rem', color: 'var(--text-dim)', padding: 0 }} onClick={() => removeFood(meal, i)} title="Remove">✕</button>
                     </span>
                   </div>
                 ))

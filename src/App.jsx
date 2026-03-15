@@ -1,5 +1,7 @@
+import { useState } from 'react'
 import { BrowserRouter, Routes, Route, Navigate } from 'react-router-dom'
 import './index.css'
+import LoadingScreen from './components/LoadingScreen'
 import Layout from './components/Layout'
 import Landing from './pages/Landing'
 import Login from './pages/Login'
@@ -7,12 +9,13 @@ import Signup from './pages/Signup'
 import Dashboard from './pages/Dashboard'
 import WorkoutLog from './pages/WorkoutLog'
 import PRs from './pages/PRs'
-import Leaderboard from './pages/Leaderboard'
 import Notes from './pages/Notes'
 import Nutrition from './pages/Nutrition'
 import Timer from './pages/Timer'
 import Schedule from './pages/Schedule'
 import Profile from './pages/Profile'
+import EndDay from './pages/EndDay'
+import Attendance from './pages/Attendance'
 
 // Simple auth check — later swap with Supabase
 const isLoggedIn = () => localStorage.getItem('il_auth') === 'true'
@@ -22,6 +25,12 @@ function PrivateRoute({ children }) {
 }
 
 function App() {
+  const [loading, setLoading] = useState(true)
+
+  if (loading) {
+    return <LoadingScreen onComplete={() => setLoading(false)} />
+  }
+
   return (
     <BrowserRouter>
       <Routes>
@@ -44,10 +53,6 @@ function App() {
           element={<PrivateRoute><Layout><PRs /></Layout></PrivateRoute>}
         />
         <Route
-          path="/leaderboard"
-          element={<PrivateRoute><Layout><Leaderboard /></Layout></PrivateRoute>}
-        />
-        <Route
           path="/notes"
           element={<PrivateRoute><Layout><Notes /></Layout></PrivateRoute>}
         />
@@ -66,6 +71,14 @@ function App() {
         <Route
           path="/profile"
           element={<PrivateRoute><Layout><Profile /></Layout></PrivateRoute>}
+        />
+        <Route
+          path="/end-day"
+          element={<PrivateRoute><Layout><EndDay /></Layout></PrivateRoute>}
+        />
+        <Route
+          path="/attendance"
+          element={<PrivateRoute><Layout><Attendance /></Layout></PrivateRoute>}
         />
 
         <Route path="*" element={<Navigate to="/" replace />} />

@@ -3,33 +3,28 @@ import './Notes.css'
 
 const TAGS = ['#general', '#chest', '#back', '#legs', '#form-tip', '#nutrition', '#mindset']
 
-const DEMO_NOTES = [
-  {
-    id: 1, content: 'Hit a breakthrough on deadlift today — keeping hips lower at setup made a HUGE difference. Finally broke 140kg.',
-    tags: ['#back', '#form-tip'], highlight: true, pinned: true, date: '2026-03-08'
-  },
-  {
-    id: 2, content: 'My left shoulder felt tight during OHP. Rest it for a day and check form on the way down. Might be going too low.',
-    tags: ['#shoulders', '#form-tip'], highlight: false, pinned: false, date: '2026-03-11'
-  },
-  {
-    id: 3, content: 'Ate too many carbs before training today. Heavy stomach. Try a lighter meal 1.5hrs before — rice + chicken only.',
-    tags: ['#nutrition'], highlight: true, pinned: false, date: '2026-03-09'
-  },
-  {
-    id: 4, content: 'Reminder: progressive overload every week. Even if it\'s just +0.5kg. Small wins compound.',
-    tags: ['#mindset'], highlight: false, pinned: false, date: '2026-03-06'
-  },
-]
+const DEMO_NOTES = []
 
 export default function Notes() {
-  const [notes, setNotes] = useState(DEMO_NOTES)
+  const [notes, setNotes] = useState(() => {
+    try {
+      const saved = localStorage.getItem('il_notes')
+      return saved ? JSON.parse(saved) : DEMO_NOTES
+    } catch {
+      return DEMO_NOTES
+    }
+  })
   const [newText, setNewText] = useState('')
   const [selectedTags, setSelectedTags] = useState([])
   const [filter, setFilter] = useState('all')
 
   function toggleTag(tag) {
     setSelectedTags(t => t.includes(tag) ? t.filter(x => x !== tag) : [...t, tag])
+  }
+
+  function saveNotes(newNotes) {
+    setNotes(newNotes)
+    localStorage.setItem('il_notes', JSON.stringify(newNotes))
   }
 
   function addNote() {
@@ -42,21 +37,22 @@ export default function Notes() {
       pinned: false,
       date: new Date().toISOString().slice(0, 10)
     }
-    setNotes(n => [note, ...n])
+    const newNotes = [note, ...notes]
+    saveNotes(newNotes)
     setNewText('')
     setSelectedTags([])
   }
 
   function toggleHighlight(id) {
-    setNotes(n => n.map(note => note.id === id ? { ...note, highlight: !note.highlight } : note))
+    saveNotes(notes.map(note => note.id === id ? { ...note, highlight: !note.highlight } : note))
   }
 
   function togglePin(id) {
-    setNotes(n => n.map(note => note.id === id ? { ...note, pinned: !note.pinned } : note))
+    saveNotes(notes.map(note => note.id === id ? { ...note, pinned: !note.pinned } : note))
   }
 
   function deleteNote(id) {
-    setNotes(n => n.filter(note => note.id !== id))
+    saveNotes(notes.filter(note => note.id !== id))
   }
 
   const sorted = [...notes].sort((a, b) => {

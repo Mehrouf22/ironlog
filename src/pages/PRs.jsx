@@ -1,31 +1,42 @@
 import { useState } from 'react'
 import './PRs.css'
 
-const DEMO_PRS = [
-  { exercise: 'Bench Press',       day: 'Chest',     weight: 80,  unit: 'kg', date: '2026-03-10', prev: 77.5 },
-  { exercise: 'Deadlift',          day: 'Back',      weight: 140, unit: 'kg', date: '2026-03-08', prev: 132.5 },
-  { exercise: 'Squat',             day: 'Legs',      weight: 100, unit: 'kg', date: '2026-03-05', prev: 97.5 },
-  { exercise: 'Overhead Press',    day: 'Shoulders', weight: 55,  unit: 'kg', date: '2026-03-01', prev: 52.5 },
-  { exercise: 'Barbell Row',       day: 'Back',      weight: 85,  unit: 'kg', date: '2026-02-28', prev: 80 },
-  { exercise: 'Incline Bench',     day: 'Chest',     weight: 65,  unit: 'kg', date: '2026-02-22', prev: 62.5 },
-]
+const DEMO_PRS = []
 
 const DAYS = ['All', 'Chest', 'Back', 'Shoulders', 'Legs', 'Arms']
 
 export default function PRs() {
   const [filter, setFilter] = useState('All')
+  const [prs, setPrs] = useState(() => {
+    try {
+      const saved = localStorage.getItem('il_prs')
+      return saved ? Object.values(JSON.parse(saved)) : []
+    } catch {
+      return []
+    }
+  })
+
+  function resetPRs() {
+    if (confirm("Are you sure you want to reset all your Personal Records?")) {
+      setPrs([])
+      localStorage.setItem('il_prs', JSON.stringify({}))
+    }
+  }
 
   const filtered = filter === 'All'
-    ? DEMO_PRS
-    : DEMO_PRS.filter(p => p.day === filter)
+    ? prs
+    : prs.filter(p => p.day === filter)
 
   return (
     <div className="prs-page page">
       <div className="container">
 
-        <header className="page-header">
-          <h1>Personal Records</h1>
-          <p style={{ marginTop: '0.5rem' }}>Your all-time bests. Keep breaking them.</p>
+        <header className="page-header" style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-start' }}>
+          <div>
+            <h1>Personal Records</h1>
+            <p style={{ marginTop: '0.5rem' }}>Your all-time bests. Keep breaking them.</p>
+          </div>
+          <button className="btn btn-ghost btn-sm" onClick={resetPRs}>Reset PRs</button>
         </header>
 
         {/* Filter tabs */}

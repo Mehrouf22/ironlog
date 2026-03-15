@@ -14,9 +14,8 @@ function newSet() { return { reps: '', weight: '', note: '', done: false } }
 
 export default function WorkoutLog() {
   const [dayType, setDayType] = useState('Chest')
-  const [exercises, setExercises] = useState([
-    { name: 'Bench Press', sets: [newSet()] }
-  ])
+  const [exercises, setExercises] = useState([])
+  const [customEx, setCustomEx] = useState('')
 
   function addExercise(name) {
     setExercises(ex => [...ex, { name, sets: [newSet()] }])
@@ -54,24 +53,109 @@ export default function WorkoutLog() {
     setExercises(ex => ex.filter((_, i) => i !== exIdx))
   }
 
+  function saveSession() {
+    if (exercises.length === 0) {
+      alert('Add some exercises to log your session!')
+      return
+    }
+
+    const currentPRs = JSON.parse(localStorage.getItem('il_prs')) || {}
+    let newPrs = { ...currentPRs }
+    let setsDoneThisSession = 0
+
+    exercises.forEach(ex => {
+      let maxWeight = 0
+      ex.sets.forEach(set => {
+        const w = parseFloat(set.weight)
+        const r = parseInt(set.reps, 10)
+        
+        // Auto-mark as done if user typed both reps and weight
+        const isFilled = !isNaN(w) && !isNaN(r) && w > 0 && r > 0
+
+        if (set.done || isFilled) {
+          set.done = true
+          setsDoneThisSession++
+          if (!isNaN(w)) {
+            maxWeight = Math.max(maxWeight, w)
+          }
+        }
+      })
+
+      if (maxWeight > 0) {
+        const existing = newPrs[ex.name]
+        if (!existing || maxWeight > existing.weight) {
+          newPrs[ex.name] = {
+            exercise: ex.name,
+            day: dayType,
+            weight: maxWeight,
+            unit: 'kg',
+            date: new Date().toISOString().slice(0, 10),
+            prev: existing ? existing.weight : 0
+          }
+        }
+      }
+    })
+
+    if (setsDoneThisSession === 0) {
+      alert('Complete at least one set to save!')
+      return
+    }
+
+    localStorage.setItem('il_prs', JSON.stringify(newPrs))
+
+    const todayString = new Date().toISOString().slice(0, 10)
+
+    let history = JSON.parse(localStorage.getItem('il_history')) || {}
+    let todayWorkout = history[todayString] || []
+    todayWorkout.push({ dayType, exercises })
+    history[todayString] = todayWorkout
+    localStorage.setItem('il_history', JSON.stringify(history))
+
+    // Automatically mark attendance
+    let attendance = JSON.parse(localStorage.getItem('il_attendance')) || []
+    if (!attendance.includes(todayString)) {
+       attendance.push(todayString)
+       localStorage.setItem('il_attendance', JSON.stringify(attendance))
+    }
+
+    let dashData = JSON.parse(localStorage.getItem('il_dashData')) || { date: todayString, setsDone: 0, streak: 0 }
+    if (dashData.date !== todayString) {
+      // Very basic streak logic update
+      dashData.streak = dashData.streak + 1
+      dashData.date = todayString
+      dashData.setsDone = 0
+    }
+    dashData.setsDone += setsDoneThisSession
+    localStorage.setItem('il_dashData', JSON.stringify(dashData))
+
+    alert('Session saved and PRs updated!')
+    setExercises([])
+  }
+
   return (
     <div className="workout-log page">
       <div className="container">
 
-        <header className="page-header">
-          <h1>Log Workout</h1>
-          <div className="day-badges">
-            {Object.keys(EXERCISES).map(d => (
-              <button
-                key={d}
-                onClick={() => setDayType(d)}
-                className={`day-pill ${dayType === d ? 'day-pill--active' : ''}`}
-              >
-                {d}
-              </button>
-            ))}
+        <header className="page-header" style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-start' }}>
+          <div>
+            <h1>Log Workout</h1>
+            <div className="day-badges" style={{ marginTop: '0.5rem' }}>
+              {Object.keys(EXERCISES).map(d => (
+                <button
+                  key={d}
+                  onClick={() => setDayType(d)}
+                  className={`day-pill ${dayType === d ? 'day-pill--active' : ''}`}
+                >
+                  {d}
+                </button>
+              ))}
+            </div>
           </div>
+          <button className="btn btn-ghost btn-sm" onClick={() => {
+            if (confirm("Are you sure you want to clear your current unsaved session?")) setExercises([])
+          }}>Clear</button>
         </header>
+
 
         {/* Exercise list */}
         <div className="exercise-list">
@@ -127,16 +211,20 @@ export default function WorkoutLog() {
         {/* Add exercise */}
         <div className="card" style={{ marginTop: '1rem' }}>
           <div className="dash-section__label" style={{ marginBottom: '0.75rem' }}>Add Exercise — {dayType}</div>
-          <div className="exercise-picker">
+          <div className="exercise-picker" style={{ marginBottom: '1rem' }}>
             {EXERCISES[dayType]?.filter(e => !exercises.find(ex => ex.name === e)).map(name => (
               <button key={name} className="ex-pill" onClick={() => addExercise(name)}>
                 + {name}
               </button>
             ))}
           </div>
+          <div style={{ display: 'flex', gap: '0.5rem' }}>
+             <input type="text" placeholder="Custom exercise name" className="set-input" style={{ flex: 1, textAlign: 'left', padding: '0.5rem' }} value={customEx} onChange={e => setCustomEx(e.target.value)} />
+             <button className="btn btn-primary btn-sm" onClick={() => { if(customEx.trim()) { addExercise(customEx.trim()); setCustomEx('') } }}>Add</button>
+          </div>
         </div>
 
-        <button className="btn btn-primary btn-full" style={{ marginTop: '1.5rem' }}>
+        <button className="btn btn-primary btn-full" style={{ marginTop: '1.5rem' }} onClick={saveSession}>
           Save Session
         </button>
       </div>

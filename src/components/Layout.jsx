@@ -5,7 +5,6 @@ const NAV_ITEMS = [
   { to: '/dashboard', label: 'Home', icon: HomeIcon },
   { to: '/log',       label: 'Log',  icon: LogIcon  },
   { to: '/prs',       label: 'PRs',  icon: TrophyIcon },
-  { to: '/leaderboard', label: 'Board', icon: BoardIcon },
   { to: '/notes',     label: 'Notes', icon: NoteIcon },
 ]
 

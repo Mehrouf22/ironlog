@@ -10,15 +10,38 @@ export default function Dashboard() {
   const today = new Date()
   const dayLabel = DAYS[today.getDay()]
 
-  // Demo state — will be replaced with Supabase data
   const [todayType, setTodayType] = useState('Chest')
-  const [setsData] = useState({ done: 12, total: 20 })
-  const [water] = useState({ cups: 5, goal: 8 })
-  const [calories] = useState({ eaten: 1840, goal: 2400 })
-  const [streak] = useState(6)
 
-  const setsLeft = setsData.total - setsData.done
-  const setsProgress = Math.round((setsData.done / setsData.total) * 100)
+  // Fetch data from local storage
+
+  const [water, setWater] = useState(() => {
+    try {
+      const saved = localStorage.getItem('il_nutrition_water')
+      const todayString = new Date().toISOString().slice(0, 10)
+      const data = saved ? JSON.parse(saved) : null
+      if (data && data.date === todayString) return { cups: data.water || 0, goal: 8 }
+      return { cups: 0, goal: 8 }
+    } catch {
+      return { cups: 0, goal: 8 }
+    }
+  })
+
+  const [calories, setCalories] = useState(() => {
+    try {
+      const saved = localStorage.getItem('il_nutrition_log')
+      const todayString = new Date().toISOString().slice(0, 10)
+      const data = saved ? JSON.parse(saved) : null
+      let eaten = 0
+      if (data && data.date === todayString && data.log) {
+        eaten = Object.values(data.log).flat().reduce((acc, f) => acc + f.kcal, 0)
+      }
+      return { eaten, goal: 2400 }
+    } catch {
+      return { eaten: 0, goal: 2400 }
+    }
+  })
+
+
   const waterProgress = Math.round((water.cups / water.goal) * 100)
   const calProgress = Math.round((calories.eaten / calories.goal) * 100)
 
@@ -56,30 +79,12 @@ export default function Dashboard() {
           <Link to="/log" className="btn btn-primary btn-full" style={{ marginTop: '1rem' }}>
             Start {todayType} Day →
           </Link>
+          <Link to="/end-day" className="btn btn-ghost btn-full" style={{ marginTop: '0.5rem', color: 'var(--text-dim)' }}>
+            Finish Day 🏁
+          </Link>
         </section>
 
-        <hr className="divider" />
 
-        {/* Key stats grid */}
-        <section className="dash-section">
-          <div className="dash-section__label">Session</div>
-          <div className="stats-grid">
-            <div className="card stat-card">
-              <div className="stat-num">{setsData.done}</div>
-              <div className="stat-label">Sets Done</div>
-              <div className="progress-bar">
-                <div className="progress-bar__fill" style={{ width: `${setsProgress}%` }} />
-              </div>
-              <p className="stat-sub">{setsLeft} left</p>
-            </div>
-
-            <div className="card stat-card">
-              <div className="stat-num">🔥 {streak}</div>
-              <div className="stat-label">Day Streak</div>
-              <p className="stat-sub">Keep going!</p>
-            </div>
-          </div>
-        </section>
 
         <hr className="divider" />
 
@@ -131,7 +136,7 @@ export default function Dashboard() {
           <div className="dash-section__label">Quick Access</div>
           <div className="quick-grid">
             <QuickCard to="/prs" icon="🏆" label="My PRs" desc="All-time bests" />
-            <QuickCard to="/leaderboard" icon="🌍" label="Leaderboard" desc="Global rankings" />
+            <QuickCard to="/attendance" icon="🔥" label="Streak" desc="Gym attendance" />
             <QuickCard to="/timer" icon="⏱️" label="Timer" desc="Set rest clock" />
             <QuickCard to="/notes" icon="📓" label="Notes" desc="Thoughts & tips" />
             <QuickCard to="/schedule" icon="📅" label="Schedule" desc="Weekly split" />
