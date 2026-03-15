@@ -1,6 +1,7 @@
 import { useState } from 'react'
 import { Link } from 'react-router-dom'
 import './Attendance.css'
+import { FlameIcon } from '../components/Icons'
 
 export default function Attendance() {
   const [attendance, setAttendance] = useState(() => {
@@ -76,7 +77,7 @@ export default function Attendance() {
       <div className="container">
       
         <header className="page-header" style={{ marginBottom: '2rem' }}>
-          <h1 style={{ display: 'flex', alignItems: 'center', gap: '0.5rem' }}>🔥 Streak & Attendance</h1>
+          <h1 style={{ display: 'flex', alignItems: 'center', gap: '0.75rem' }}><FlameIcon size={32} /> Streak & Attendance</h1>
           <p style={{ marginTop: '0.5rem' }}>Consistency is the only metric that matters.</p>
         </header>
 

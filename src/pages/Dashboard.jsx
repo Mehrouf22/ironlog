@@ -1,6 +1,18 @@
 import { useState, useEffect } from 'react'
 import { Link } from 'react-router-dom'
 import './Dashboard.css'
+import { 
+  DropletIcon, 
+  NutritionIcon, 
+  SuppsIcon, 
+  MedicalIcon, 
+  TrophyIcon, 
+  FlameIcon, 
+  TimerIcon, 
+  NoteIcon, 
+  ScheduleIcon,
+  FlagIcon
+} from '../components/Icons'
 
 const DAYS = ['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat']
 const DAY_TYPES = ['Rest', 'Chest', 'Back', 'Shoulders', 'Legs', 'Arms', 'Full Body']
@@ -107,8 +119,8 @@ export default function Dashboard() {
           <Link to="/log" className="btn btn-primary btn-full" style={{ marginTop: '1rem' }}>
             Start {todayType} Day →
           </Link>
-          <Link to="/end-day" className="btn btn-ghost btn-full" style={{ marginTop: '0.5rem', color: 'var(--text-dim)' }}>
-            Finish Day 🏁
+          <Link to="/end-day" className="btn btn-ghost btn-full" style={{ marginTop: '0.5rem', color: 'var(--text-dim)', gap: '0.5rem' }}>
+            Finish Day <FlagIcon size={16} />
           </Link>
         </section>
 
@@ -123,7 +135,7 @@ export default function Dashboard() {
             {/* Water */}
             <div className="card health-card">
               <div className="health-card__top">
-                <span className="health-icon">💧</span>
+                <span className="health-icon"><DropletIcon color="var(--accent)" /></span>
                 <div>
                   <div className="stat-num" style={{ fontSize: '1.25rem' }}>
                     {water.cups}<span className="stat-unit" style={{ fontSize: '0.8rem', opacity: 0.6 }}>/{water.goal}</span>
@@ -139,7 +151,7 @@ export default function Dashboard() {
             {/* Calories */}
             <div className="card health-card">
               <div className="health-card__top">
-                <span className="health-icon">🍎</span>
+                <span className="health-icon"><NutritionIcon /></span>
                 <div>
                   <div className="stat-num" style={{ fontSize: '1.25rem' }}>
                     {calories.eaten}<span className="stat-unit" style={{ fontSize: '0.8rem', opacity: 0.6 }}>kcal</span>
@@ -155,7 +167,7 @@ export default function Dashboard() {
             {/* Supplements */}
             <div className="card health-card">
               <div className="health-card__top">
-                <span className="health-icon">💊</span>
+                <span className="health-icon"><SuppsIcon /></span>
                 <div>
                   <div className="stat-num" style={{ fontSize: '1.25rem' }}>
                     {supps.length}
@@ -171,7 +183,7 @@ export default function Dashboard() {
             {/* Medicine */}
             <div className="card health-card">
               <div className="health-card__top">
-                <span className="health-icon">🩺</span>
+                <span className="health-icon"><MedicalIcon /></span>
                 <div>
                   <div className="stat-num" style={{ fontSize: '1.25rem' }}>
                     {medTaken}<span className="stat-unit" style={{ fontSize: '0.8rem', opacity: 0.6 }}>/{medTotal}</span>
@@ -195,11 +207,11 @@ export default function Dashboard() {
         <section className="dash-section">
           <div className="dash-section__label">Quick Access</div>
           <div className="quick-grid">
-            <QuickCard to="/prs" icon="🏆" label="My PRs" desc="All-time bests" />
-            <QuickCard to="/attendance" icon="🔥" label="Streak" desc="Gym attendance" />
-            <QuickCard to="/timer" icon="⏱️" label="Timer" desc="Set rest clock" />
-            <QuickCard to="/notes" icon="📓" label="Notes" desc="Thoughts & tips" />
-            <QuickCard to="/schedule" icon="📅" label="Schedule" desc="Weekly split" />
+            <QuickCard to="/prs" icon={<TrophyIcon size={20} />} label="My PRs" desc="All-time bests" />
+            <QuickCard to="/attendance" icon={<FlameIcon size={20} />} label="Streak" desc="Gym attendance" />
+            <QuickCard to="/timer" icon={<TimerIcon size={20} />} label="Timer" desc="Set rest clock" />
+            <QuickCard to="/notes" icon={<NoteIcon size={20} />} label="Notes" desc="Thoughts & tips" />
+            <QuickCard to="/schedule" icon={<ScheduleIcon size={20} />} label="Schedule" desc="Weekly split" />
           </div>
         </section>
 

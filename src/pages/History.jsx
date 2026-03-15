@@ -1,5 +1,6 @@
 import { useState, useEffect } from 'react'
 import './History.css'
+import { FolderIcon } from '../components/Icons'
 
 export default function History() {
   const [history, setHistory] = useState({})
@@ -53,7 +54,9 @@ export default function History() {
 
         {sortedDates.length === 0 ? (
           <div className="card" style={{ textAlign: 'center', padding: '3rem 1rem' }}>
-            <div style={{ fontSize: '3rem', marginBottom: '1rem' }}>📁</div>
+            <div style={{ marginBottom: '1rem', display: 'flex', justifyContent: 'center', color: 'var(--text-dim)', opacity: 0.5 }}>
+              <FolderIcon size={48} />
+            </div>
             <p className="text-dim">No workout history found yet.</p>
             <p className="text-dim" style={{ fontSize: '0.9rem' }}>Go to the Log tab to start your first session!</p>
           </div>

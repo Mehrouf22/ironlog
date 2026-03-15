@@ -1,6 +1,7 @@
 import { useState } from 'react'
 import { useNavigate, Link } from 'react-router-dom'
 import './EndDay.css'
+import { TrophyIcon, CheckCircleIcon, RefreshIcon } from '../components/Icons'
 
 export default function EndDay() {
   const navigate = useNavigate()
@@ -99,12 +100,12 @@ export default function EndDay() {
       <div className="container" style={{ textAlign: 'center', paddingTop: '2rem' }}>
         
         <div className="end-day-hero">
-          <h1 className="hero-emoji">🏆</h1>
+          <h1 className="hero-emoji" style={{ marginBottom: '1rem' }}><TrophyIcon size={48} /></h1>
           <h2>Day Completed!</h2>
           <p className="text-dim">{new Date().toLocaleDateString('en-US', { weekday: 'long', month: 'long', day: 'numeric' })}</p>
           {attendedToday && (
-            <div style={{ marginTop: '1rem', display: 'inline-block' }} className="badge badge-accent">
-               ✅ Gym Check-In Complete!
+            <div style={{ marginTop: '1rem', display: 'inline-flex', alignItems: 'center', gap: '0.5rem' }} className="badge badge-accent">
+               <CheckCircleIcon size={14} /> Gym Check-In Complete!
             </div>
           )}
         </div>
@@ -173,8 +174,8 @@ export default function EndDay() {
         </section>
 
         <div style={{ marginTop: '3rem', paddingBottom: '2rem', display: 'flex', flexDirection: 'column', gap: '1rem' }}>
-           <button className="btn btn-primary btn-full" onClick={completeAndResetDay}>
-             Complete Day & Reset Stats 🔄
+           <button className="btn btn-primary btn-full" style={{ gap: '0.5rem' }} onClick={completeAndResetDay}>
+             Complete Day & Reset Stats <RefreshIcon size={18} />
            </button>
            <Link to="/dashboard" className="btn btn-ghost btn-full">Back to Home</Link>
         </div>

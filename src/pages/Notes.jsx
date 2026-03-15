@@ -1,5 +1,6 @@
 import { useState } from 'react'
 import './Notes.css'
+import { StarIcon, PinIcon } from '../components/Icons'
 
 const TAGS = ['#general', '#chest', '#back', '#legs', '#form-tip', '#nutrition', '#mindset']
 
@@ -111,8 +112,9 @@ export default function Notes() {
               key={f}
               onClick={() => setFilter(f)}
               className={`day-pill ${filter === f ? 'day-pill--active' : ''}`}
+              style={{ display: 'flex', alignItems: 'center', gap: '0.4rem' }}
             >
-              {f === 'all' ? 'All' : f === 'highlights' ? '⭐ Highlights' : '📌 Pinned'}
+              {f === 'all' ? 'All' : f === 'highlights' ? <><StarIcon size={14} fill="currentColor" /> Highlights</> : <><PinIcon size={14} fill="currentColor" /> Pinned</>}
             </button>
           ))}
         </div>
@@ -122,13 +124,13 @@ export default function Notes() {
           {filtered.map(note => (
             <div key={note.id} className={`card note-card ${note.highlight ? 'note-card--highlight' : ''} ${note.pinned ? 'note-card--pinned' : ''}`}>
               <div className="note-card__top">
-                {note.pinned && <span className="pin-badge">📌</span>}
+                {note.pinned && <span className="pin-badge" style={{ display: 'flex', alignItems: 'center' }}><PinIcon size={14} fill="currentColor" /></span>}
                 <div className="note-actions">
                   <button className="note-action-btn" onClick={() => toggleHighlight(note.id)} title="Highlight">
-                    {note.highlight ? '⭐' : '☆'}
+                    <StarIcon size={16} fill={note.highlight ? "currentColor" : "none"} />
                   </button>
                   <button className="note-action-btn" onClick={() => togglePin(note.id)} title="Pin">
-                    {note.pinned ? '📌' : '—'}
+                    <PinIcon size={16} fill={note.pinned ? "currentColor" : "none"} />
                   </button>
                   <button className="note-action-btn note-action-btn--del" onClick={() => deleteNote(note.id)} title="Delete">✕</button>
                 </div>

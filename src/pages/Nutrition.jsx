@@ -1,5 +1,6 @@
 import { useState } from 'react'
 import './Nutrition.css'
+import { DropletIcon, SuppsIcon, MedicalIcon } from '../components/Icons'
 
 // Initial default categories
 const DEFAULT_MEALS = { Breakfast: [], Lunch: [], Dinner: [], Snack: [] }
@@ -263,7 +264,7 @@ export default function Nutrition() {
         {/* Water */}
         <div className="card water-card">
           <div className="water-header">
-            <span>💧 Water</span>
+            <span style={{ display: 'flex', alignItems: 'center', gap: '0.5rem' }}><DropletIcon /> Water</span>
             <span className="water-count">{water} / {waterGoal} cups</span>
           </div>
           <div className="water-dots">
@@ -345,7 +346,7 @@ export default function Nutrition() {
         {/* Supplements Section */}
         <section className="supps-section" style={{ marginBottom: '3rem' }}>
           <div className="meal-header">
-            <h3 className="meal-title">💊 Supplements</h3>
+            <h3 className="meal-title" style={{ display: 'flex', alignItems: 'center', gap: '0.5rem' }}><SuppsIcon /> Supplements</h3>
             <button className="btn btn-text btn-sm" onClick={() => setIsAddingSupp(!isAddingSupp)}>
               {isAddingSupp ? 'Cancel' : '+ Add Supp'}
             </button>
@@ -382,7 +383,7 @@ export default function Nutrition() {
         {/* Medicine Section */}
         <section className="meds-section" style={{ marginBottom: '4rem' }}>
           <div className="meal-header">
-            <h3 className="meal-title">🩺 Medications</h3>
+            <h3 className="meal-title" style={{ display: 'flex', alignItems: 'center', gap: '0.5rem' }}><MedicalIcon /> Medications</h3>
             <button className="btn btn-text btn-sm" onClick={() => setIsAddingMed(!isAddingMed)}>
               {isAddingMed ? 'Cancel' : '+ Add Med'}
             </button>

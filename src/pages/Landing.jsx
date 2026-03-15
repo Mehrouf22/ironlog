@@ -1,5 +1,14 @@
 import { Link } from 'react-router-dom'
 import './Landing.css'
+import { 
+  TrophyIcon, 
+  TimerIcon, 
+  NutritionIcon, 
+  NoteIcon, 
+  DropletIcon, 
+  FlameIcon, 
+  LogIcon 
+} from '../components/Icons'
 
 export default function Landing() {
   return (
@@ -40,14 +49,16 @@ export default function Landing() {
         {/* Feature pills */}
         <div className="landing__features">
           {[
-            '🏋️ Workout Engine',
-            '🏆 PR Tracking',
-            '⏱️ Rest Timer',
-            '🥗 Custom Macros',
-            '📓 Athlete Notes',
-            '💧 Hydration',
-          ].map(f => (
-            <span key={f} className="feature-pill">{f}</span>
+            { icon: <LogIcon size={16} />, label: 'Workout Engine' },
+            { icon: <TrophyIcon size={16} />, label: 'PR Tracking' },
+            { icon: <TimerIcon size={16} />, label: 'Rest Timer' },
+            { icon: <NutritionIcon size={16} />, label: 'Custom Macros' },
+            { icon: <NoteIcon size={16} />, label: 'Athlete Notes' },
+            { icon: <DropletIcon size={16} />, label: 'Hydration' },
+          ].map((f, idx) => (
+            <span key={idx} className="feature-pill" style={{ display: 'flex', alignItems: 'center', gap: '0.4rem' }}>
+              {f.icon} {f.label}
+            </span>
           ))}
         </div>
 
@@ -62,8 +73,8 @@ export default function Landing() {
         </div>
 
         {/* Footer note */}
-        <p className="landing__footer-note">
-          Built by a lifter. For lifters. 🔥
+        <p className="landing__footer-note" style={{ display: 'flex', alignItems: 'center', justifyContent: 'center', gap: '0.4rem' }}>
+          Built by a lifter. For lifters. <FlameIcon size={14} color="var(--accent)" />
         </p>
       </main>
     </div>

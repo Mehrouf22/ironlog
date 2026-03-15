@@ -1,5 +1,6 @@
 import { useState, useEffect, useRef } from 'react'
 import './Timer.css'
+import { RefreshIcon } from '../components/Icons'
 
 const PRESETS = [60, 90, 120, 180]
 
@@ -97,7 +98,7 @@ export default function Timer() {
             </svg>
             <div className="timer-digits">
               {formatTime(timerRemain)}
-              {timerRemain === 0 && <div className="timer-done">Done! 💪</div>}
+              {timerRemain === 0 && <div className="timer-done">Rest Complete</div>}
             </div>
           </div>
 
@@ -116,7 +117,9 @@ export default function Timer() {
 
           {/* Controls */}
           <div className="timer-controls">
-            <button className="btn btn-ghost" onClick={resetTimer}>Reset</button>
+            <button className="btn btn-ghost" style={{ display: 'flex', alignItems: 'center', gap: '0.4rem' }} onClick={resetTimer}>
+              <RefreshIcon size={14} /> Reset
+            </button>
             <button
               className="btn btn-primary"
               onClick={() => setTimerRunning(r => !r)}
