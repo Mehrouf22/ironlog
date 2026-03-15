@@ -20,6 +20,28 @@ export default function Nutrition() {
       return DEFAULT_MEALS
     }
   })
+  const [supps, setSupps] = useState(() => {
+    try {
+      const saved = localStorage.getItem('il_nutrition_supps')
+      const today = new Date().toISOString().slice(0, 10)
+      const data = saved ? JSON.parse(saved) : null
+      if (data && data.date === today) return data.supps
+      return []
+    } catch {
+      return []
+    }
+  })
+  const [meds, setMeds] = useState(() => {
+    try {
+      const saved = localStorage.getItem('il_nutrition_meds')
+      const today = new Date().toISOString().slice(0, 10)
+      const data = saved ? JSON.parse(saved) : null
+      if (data && data.date === today) return data.meds
+      return []
+    } catch {
+      return []
+    }
+  })
   const [newMealName, setNewMealName] = useState('')
   const [water, setWater] = useState(() => {
     try {
@@ -53,6 +75,10 @@ export default function Nutrition() {
   const [tempWaterGoal, setTempWaterGoal] = useState(waterGoal)
   const [adding, setAdding] = useState(null)
   const [form, setForm] = useState({ name: '', kcal: '', protein: '', carbs: '', fat: '' })
+  const [suppForm, setSuppForm] = useState({ name: '', dosage: '' })
+  const [medForm, setMedForm] = useState({ name: '', timing: '' })
+  const [isAddingSupp, setIsAddingSupp] = useState(false)
+  const [isAddingMed, setIsAddingMed] = useState(false)
 
   const totals = Object.values(log).flat().reduce(
     (acc, f) => ({
@@ -117,6 +143,42 @@ export default function Nutrition() {
     setNewMealName('')
   }
 
+  function addSupp() {
+    if (!suppForm.name) return
+    const newSupps = [...supps, { name: suppForm.name, dosage: suppForm.dosage, taken: true }]
+    setSupps(newSupps)
+    localStorage.setItem('il_nutrition_supps', JSON.stringify({ date: new Date().toISOString().slice(0, 10), supps: newSupps }))
+    setSuppForm({ name: '', dosage: '' })
+    setIsAddingSupp(false)
+  }
+
+  function removeSupp(index) {
+    const newSupps = supps.filter((_, i) => i !== index)
+    setSupps(newSupps)
+    localStorage.setItem('il_nutrition_supps', JSON.stringify({ date: new Date().toISOString().slice(0, 10), supps: newSupps }))
+  }
+
+  function addMed() {
+    if (!medForm.name) return
+    const newMeds = [...meds, { name: medForm.name, timing: medForm.timing, taken: false }]
+    setMeds(newMeds)
+    localStorage.setItem('il_nutrition_meds', JSON.stringify({ date: new Date().toISOString().slice(0, 10), meds: newMeds }))
+    setMedForm({ name: '', timing: '' })
+    setIsAddingMed(false)
+  }
+
+  function toggleMed(index) {
+    const newMeds = meds.map((m, i) => i === index ? { ...m, taken: !m.taken } : m)
+    setMeds(newMeds)
+    localStorage.setItem('il_nutrition_meds', JSON.stringify({ date: new Date().toISOString().slice(0, 10), meds: newMeds }))
+  }
+
+  function removeMed(index) {
+    const newMeds = meds.filter((_, i) => i !== index)
+    setMeds(newMeds)
+    localStorage.setItem('il_nutrition_meds', JSON.stringify({ date: new Date().toISOString().slice(0, 10), meds: newMeds }))
+  }
+
   function deleteMealGroup(meal) {
     if (confirm(`Delete the entire "${meal}" group?`)) {
       const newLog = { ...log }
@@ -130,8 +192,12 @@ export default function Nutrition() {
     if (confirm("Are you sure you want to reset today's nutrition?")) {
       setLog(DEFAULT_MEALS)
       setWater(0)
+      setSupps([])
+      setMeds([])
       localStorage.setItem('il_nutrition_log', JSON.stringify({ date: new Date().toISOString().slice(0, 10), log: DEFAULT_MEALS }))
       localStorage.setItem('il_nutrition_water', JSON.stringify({ date: new Date().toISOString().slice(0, 10), water: 0 }))
+      localStorage.setItem('il_nutrition_supps', JSON.stringify({ date: new Date().toISOString().slice(0, 10), supps: [] }))
+      localStorage.setItem('il_nutrition_meds', JSON.stringify({ date: new Date().toISOString().slice(0, 10), meds: [] }))
     }
   }
 
@@ -273,6 +339,88 @@ export default function Nutrition() {
              <button className="btn btn-primary btn-sm" onClick={addMealGroup}>Create</button>
            </div>
         </div>
+
+        <hr className="divider" style={{ margin: '3rem 0' }} />
+
+        {/* Supplements Section */}
+        <section className="supps-section" style={{ marginBottom: '3rem' }}>
+          <div className="meal-header">
+            <h3 className="meal-title">💊 Supplements</h3>
+            <button className="btn btn-text btn-sm" onClick={() => setIsAddingSupp(!isAddingSupp)}>
+              {isAddingSupp ? 'Cancel' : '+ Add Supp'}
+            </button>
+          </div>
+
+          <div className="food-list">
+            {supps.length === 0 ? (
+              <p className="meal-empty">No supplements logged today.</p>
+            ) : (
+              supps.map((supp, i) => (
+                <div key={i} className="food-row">
+                  <div style={{ display: 'flex', alignItems: 'center', gap: '0.75rem' }}>
+                    <span className="check-icon" style={{ opacity: 0.5 }}>✓</span>
+                    <span className="food-name">{supp.name}</span>
+                  </div>
+                  <span className="food-macros">
+                    <span>{supp.dosage}</span>
+                    <button className="btn btn-text btn-sm" style={{ marginLeft: '1rem', color: '#fff' }} onClick={() => removeSupp(i)}>✕</button>
+                  </span>
+                </div>
+              ))
+            )}
+          </div>
+
+          {isAddingSupp && (
+            <div className="card add-food-form">
+              <input placeholder="Supplement name (e.g. Creatine)" value={suppForm.name} onChange={e => setSuppForm({...suppForm, name: e.target.value})} />
+              <input placeholder="Dosage (e.g. 5g, 1 scoop)" value={suppForm.dosage} onChange={e => setSuppForm({...suppForm, dosage: e.target.value})} />
+              <button className="btn btn-primary btn-full" onClick={addSupp}>Log Supplement</button>
+            </div>
+          )}
+        </section>
+
+        {/* Medicine Section */}
+        <section className="meds-section" style={{ marginBottom: '4rem' }}>
+          <div className="meal-header">
+            <h3 className="meal-title">🩺 Medications</h3>
+            <button className="btn btn-text btn-sm" onClick={() => setIsAddingMed(!isAddingMed)}>
+              {isAddingMed ? 'Cancel' : '+ Add Med'}
+            </button>
+          </div>
+
+          <div className="food-list">
+            {meds.length === 0 ? (
+              <p className="meal-empty">No medications listed.</p>
+            ) : (
+              meds.map((med, i) => (
+                <div key={i} className={`food-row ${med.taken ? 'med-taken' : ''}`} style={{ opacity: med.taken ? 0.6 : 1 }}>
+                  <div style={{ display: 'flex', alignItems: 'center', gap: '0.75rem', flex: 1 }}>
+                    <button 
+                      className={`check-btn ${med.taken ? 'check-btn--done' : ''}`}
+                      onClick={() => toggleMed(i)}
+                      style={{ width: '24px', height: '24px', flexShrink: 0, padding: 0 }}
+                    >
+                      {med.taken ? '✓' : ''}
+                    </button>
+                    <div>
+                      <div className="food-name" style={{ textDecoration: med.taken ? 'line-through' : 'none' }}>{med.name}</div>
+                      <div style={{ fontSize: '0.75rem', color: 'var(--text-muted)' }}>{med.timing}</div>
+                    </div>
+                  </div>
+                  <button className="btn btn-text btn-sm" style={{ color: '#fff' }} onClick={() => removeMed(i)}>✕</button>
+                </div>
+              ))
+            )}
+          </div>
+
+          {isAddingMed && (
+            <div className="card add-food-form">
+              <input placeholder="Medicine name" value={medForm.name} onChange={e => setMedForm({...medForm, name: e.target.value})} />
+              <input placeholder="Timing (e.g. Morning, After Lunch)" value={medForm.timing} onChange={e => setMedForm({...medForm, timing: e.target.value})} />
+              <button className="btn btn-primary btn-full" onClick={addMed}>Add to Daily List</button>
+            </div>
+          )}
+        </section>
 
       </div>
     </div>

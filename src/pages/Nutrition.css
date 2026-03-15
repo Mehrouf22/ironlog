@@ -144,3 +144,29 @@
 .section-label { font-size: 0.6875rem; font-weight: 600; letter-spacing: 0.1em; text-transform: uppercase; color: var(--text-muted); }
 .progress-bar { height: 3px; background: var(--border); border-radius: 2px; overflow: hidden; }
 .progress-bar__fill { height: 100%; border-radius: 2px; transition: width 0.8s ease; }
+
+/* Medications & Supps */
+.check-btn {
+  width: 28px;
+  height: 28px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 50%;
+  border: 1px solid var(--border-light);
+  background: var(--bg-elevated);
+  color: var(--text-muted);
+  font-size: 0.75rem;
+  cursor: pointer;
+  transition: var(--transition);
+}
+
+.check-btn--done {
+  background: var(--accent);
+  border-color: var(--accent);
+  color: #000;
+}
+
+.med-taken .food-name {
+  color: var(--text-muted);
+}
