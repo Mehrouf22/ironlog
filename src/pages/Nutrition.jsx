@@ -237,7 +237,7 @@ export default function Nutrition() {
                     <span className="food-macros">
                       <span>{food.kcal}kcal</span>
                       <span>{food.protein}g P</span>
-                      <button className="btn btn-text btn-sm" style={{ marginLeft: '0.5rem', color: 'var(--text-dim)', padding: 0 }} onClick={() => removeFood(meal, i)} title="Remove">✕</button>
+                      <button className="btn btn-text btn-sm" style={{ marginLeft: '1rem', color: '#fff', fontSize: '1.2rem', padding: '4px' }} onClick={() => removeFood(meal, i)} title="Remove Product">✕</button>
                     </span>
                   </div>
                 ))

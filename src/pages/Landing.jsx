@@ -11,8 +11,15 @@ export default function Landing() {
 
       <main className="landing__main">
         {/* Logo */}
-        <div className="landing__logo">
-          <span className="landing__logo-mark">IL</span>
+        <div className="landing__logo" style={{ marginBottom: '2rem' }}>
+          <span className="landing__logo-mark" style={{ 
+            fontFamily: 'var(--font-brand)', 
+            width: 'auto', 
+            padding: '0 1rem', 
+            height: '50px', 
+            fontSize: '1.5rem',
+            letterSpacing: '0.1em'
+          }}>MATRINAX</span>
         </div>
 
         {/* Hero text */}
@@ -21,24 +28,24 @@ export default function Landing() {
             Beta · Mobile First
           </div>
           <h1 className="landing__title">
-            Train harder.<br />
-            Track smarter.<br />
-            <span className="landing__title-accent">Outlift everyone.</span>
+            Break limits.<br />
+            Track results.<br />
+            <span className="landing__title-accent">Become the machine.</span>
           </h1>
           <p className="landing__subtitle">
-            IronLog is the gym companion for serious athletes. Log PRs, beat the leaderboard, and never miss a set.
+            MATRINAX is a minimal, performance-first engine for high-output athletes. Precision tracking, custom nutrition, and zero distractions.
           </p>
         </div>
 
         {/* Feature pills */}
         <div className="landing__features">
           {[
-            '🏋️ PR Tracking',
-            '🌍 Leaderboards',
-            '⏱️ Set Timer',
-            '🍎 Nutrition',
-            '📓 Notes',
-            '💧 Water',
+            '🏋️ Workout Engine',
+            '🏆 PR Tracking',
+            '⏱️ Rest Timer',
+            '🥗 Custom Macros',
+            '📓 Athlete Notes',
+            '💧 Hydration',
           ].map(f => (
             <span key={f} className="feature-pill">{f}</span>
           ))}

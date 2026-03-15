@@ -1,9 +1,3 @@
-@font-face {
-  font-family: 'Neotriads';
-  src: url('/Neotriad.otf') format('opentype');
-  font-weight: normal;
-  font-style: normal;
-}
 
 .loading-screen {
   position: fixed;

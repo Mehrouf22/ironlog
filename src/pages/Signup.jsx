@@ -37,8 +37,8 @@ export default function Signup() {
       <div className="auth-card">
         {/* Logo */}
         <Link to="/" className="auth-logo">
-          <span className="auth-logo__mark">IL</span>
-          <span className="auth-logo__name">IronLog</span>
+          <span className="auth-logo__mark" style={{ fontFamily: 'var(--font-brand)', width: 'auto', padding: '0 0.5rem' }}>M</span>
+          <span className="auth-logo__name">MATRINAX</span>
         </Link>
 
         <div className="auth-header">
