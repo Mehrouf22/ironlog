@@ -13,7 +13,7 @@
   gap: var(--space-3);
 }
 
-.pr-card { }
+
 
 .pr-card__top {
   display: flex;
@@ -94,7 +94,7 @@
 }
 
 .day-pill--active {
-  background: var(--accent-subtle);
+  background: var(--accent);
+  color: #000;
   border-color: var(--accent);
-  color: var(--accent);
 }

@@ -184,7 +184,7 @@ input::placeholder, textarea::placeholder {
 
 .btn-primary {
   background: var(--accent);
-  color: #fff;
+  color: #000;
   border-color: var(--accent);
 }
 .btn-primary:hover {
