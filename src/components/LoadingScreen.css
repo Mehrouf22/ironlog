@@ -12,15 +12,28 @@
   width: 100vw;
   height: 100vh;
   min-height: 100dvh;
-  /* Use the brand orange given to our app */
   background-color: var(--accent); 
   display: flex;
   flex-direction: column;
   justify-content: center;
   align-items: center;
   z-index: 9999;
-  /* Fades out smoothly at the end of the timeout */
-  animation: fadeOutLoad 0.4s ease 2.1s forwards;
+  overflow: hidden;
+  /* Sync with 3.5s duration - start fade at 3.1s */
+  animation: fadeOutLoad 0.5s cubic-bezier(0.7, 0, 0.3, 1) 3.1s forwards;
+}
+
+/* Subtle background ripple effect */
+.loading-screen::before {
+  content: '';
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  width: 100vmax;
+  height: 100vmax;
+  background: radial-gradient(circle, rgba(0,0,0,0.05) 0%, transparent 70%);
+  transform: translate(-50%, -50%) scale(0);
+  animation: bgRipple 3s ease-out forwards;
 }
 
 .loading-content {
@@ -28,42 +41,80 @@
   display: flex;
   justify-content: center;
   align-items: center;
+  position: relative;
+  z-index: 2;
 }
 
 .loading-title {
-  /* Use custom specified font! */
   font-family: 'Neotriads', var(--font-display);
-  font-size: clamp(3rem, 12vw, 5rem);
+  font-size: clamp(3rem, 15vw, 6.5rem);
   font-weight: 700;
-  color: #000; /* Text gotta be black */
-  letter-spacing: 0.05em;
+  color: #000;
+  letter-spacing: -0.02em; /* Start tight */
   text-transform: uppercase;
   margin: 0;
-  animation: pulseLoad 1.5s infinite alternate;
+  display: flex;
+  overflow: hidden;
+  animation: trackExpand 3s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+}
+
+.loading-title span {
+  display: inline-block;
+  transform: translateY(110%);
+  opacity: 0;
+  animation: letterRise 1.2s cubic-bezier(0.23, 1, 0.32, 1) forwards;
+  animation-delay: calc(var(--index) * 0.08s);
 }
 
 .loading-footer {
-  padding-bottom: 2rem;
+  padding-bottom: 3rem;
+  position: relative;
+  z-index: 2;
+  overflow: hidden;
 }
 
 .loading-footer p {
-  color: #000; /* Text gotta be black */
+  color: #000;
   font-family: var(--font-body);
   font-weight: 600;
-  font-size: 0.85rem;
-  letter-spacing: 0.1em;
+  font-size: 0.8rem;
+  letter-spacing: 0.2em;
   margin: 0;
-  opacity: 0.8;
+  opacity: 0;
+  transform: translateY(20px);
+  animation: footerRise 1s ease-out 1s forwards;
 }
 
-@keyframes pulseLoad {
-  0% { transform: scale(1); opacity: 0.9; }
-  100% { transform: scale(1.05); opacity: 1; }
+@keyframes letterRise {
+  to {
+    transform: translateY(0);
+    opacity: 1;
+  }
+}
+
+@keyframes trackExpand {
+  to {
+    letter-spacing: 0.15em;
+  }
+}
+
+@keyframes bgRipple {
+  0% { transform: translate(-50%, -50%) scale(0); opacity: 0; }
+  50% { opacity: 1; }
+  100% { transform: translate(-50%, -50%) scale(1.5); opacity: 0; }
+}
+
+@keyframes footerRise {
+  to {
+    transform: translateY(0);
+    opacity: 0.7;
+  }
 }
 
 @keyframes fadeOutLoad {
   to {
     opacity: 0;
+    transform: scale(1.05);
     pointer-events: none;
   }
 }
