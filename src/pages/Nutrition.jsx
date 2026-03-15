@@ -10,7 +10,7 @@ const DEMO_FOOD = {
   Snack: [],
 }
 
-const GOALS = { kcal: 2400, protein: 160, carbs: 250, fat: 70 }
+const DEFAULT_GOALS = { kcal: 2400, protein: 160, carbs: 250, fat: 70 }
 
 export default function Nutrition() {
   const [log, setLog] = useState(() => {
@@ -35,7 +35,25 @@ export default function Nutrition() {
       return 0
     }
   })
-  const [waterGoal] = useState(8)
+  const [goals, setGoals] = useState(() => {
+    try {
+      const saved = localStorage.getItem('il_nutrition_goals')
+      return saved ? JSON.parse(saved) : DEFAULT_GOALS
+    } catch {
+      return DEFAULT_GOALS
+    }
+  })
+  const [waterGoal, setWaterGoal] = useState(() => {
+    try {
+      const saved = localStorage.getItem('il_nutrition_water_goal')
+      return saved ? JSON.parse(saved) : 8
+    } catch {
+      return 8
+    }
+  })
+  const [editingGoals, setEditingGoals] = useState(false)
+  const [goalForm, setGoalForm] = useState(goals)
+  const [tempWaterGoal, setTempWaterGoal] = useState(waterGoal)
   const [adding, setAdding] = useState(null)
   const [form, setForm] = useState({ name: '', kcal: '', protein: '', carbs: '', fat: '' })
 
@@ -74,6 +92,14 @@ export default function Nutrition() {
      localStorage.setItem('il_nutrition_water', JSON.stringify({ date: new Date().toISOString().slice(0, 10), water: newWater }))
   }
 
+  function saveGoals() {
+    setGoals(goalForm)
+    setWaterGoal(tempWaterGoal)
+    localStorage.setItem('il_nutrition_goals', JSON.stringify(goalForm))
+    localStorage.setItem('il_nutrition_water_goal', JSON.stringify(tempWaterGoal))
+    setEditingGoals(false)
+  }
+
   function removeFood(meal, index) {
     const newMealList = log[meal].filter((_, i) => i !== index)
     const newLog = { ...log, [meal]: newMealList }
@@ -94,22 +120,56 @@ export default function Nutrition() {
     <div className="nutrition-page page">
       <div className="container">
 
-        <header className="page-header" style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-start' }}>
+        <header className="page-header" style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-start', flexWrap: 'wrap', gap: '1rem' }}>
           <div>
             <h1>Nutrition</h1>
             <p style={{ marginTop: '0.5rem' }}>Fuel matters as much as iron.</p>
           </div>
-          <button className="btn btn-ghost btn-sm" onClick={resetNutrition}>Reset Today</button>
+          <div style={{ display: 'flex', gap: '0.5rem' }}>
+            <button className="btn btn-ghost btn-sm" onClick={() => setEditingGoals(!editingGoals)}>
+              {editingGoals ? 'Cancel Edit' : 'Edit Goals'}
+            </button>
+            <button className="btn btn-ghost btn-sm" onClick={resetNutrition}>Reset Today</button>
+          </div>
         </header>
+
+        {editingGoals && (
+          <div className="card" style={{ marginBottom: '1.5rem', background: 'var(--bg-elevated)' }}>
+            <div className="section-label" style={{ marginBottom: '1rem' }}>Adjust Goals</div>
+            <div className="macro-inputs" style={{ marginBottom: '1rem' }}>
+              <div>
+                <label className="stat-label">Daily Calories</label>
+                <input type="number" value={goalForm.kcal} onChange={e => setGoalForm({...goalForm, kcal: +e.target.value})} />
+              </div>
+              <div>
+                <label className="stat-label">Protein (g)</label>
+                <input type="number" value={goalForm.protein} onChange={e => setGoalForm({...goalForm, protein: +e.target.value})} />
+              </div>
+              <div>
+                <label className="stat-label">Carbs (g)</label>
+                <input type="number" value={goalForm.carbs} onChange={e => setGoalForm({...goalForm, carbs: +e.target.value})} />
+              </div>
+              <div>
+                <label className="stat-label">Fat (g)</label>
+                <input type="number" value={goalForm.fat} onChange={e => setGoalForm({...goalForm, fat: +e.target.value})} />
+              </div>
+              <div>
+                <label className="stat-label">Water (cups)</label>
+                <input type="number" value={tempWaterGoal} onChange={e => setTempWaterGoal(+e.target.value)} />
+              </div>
+            </div>
+            <button className="btn btn-primary btn-full" onClick={saveGoals}>Save Personal Goals</button>
+          </div>
+        )}
 
         {/* Macro summary */}
         <div className="card macro-summary">
           <div className="section-label" style={{ marginBottom: '1rem' }}>Today's Macros</div>
           <div className="macro-grid">
-            <MacroBar label="Calories" value={totals.kcal} goal={GOALS.kcal} unit="kcal" />
-            <MacroBar label="Protein" value={totals.protein} goal={GOALS.protein} unit="g" color="#4caf82" />
-            <MacroBar label="Carbs" value={totals.carbs} goal={GOALS.carbs} unit="g" color="#3a9bd5" />
-            <MacroBar label="Fat" value={totals.fat} goal={GOALS.fat} unit="g" color="#c9a227" />
+            <MacroBar label="Calories" value={totals.kcal} goal={goals.kcal} unit="kcal" />
+            <MacroBar label="Protein" value={totals.protein} goal={goals.protein} unit="g" color="#4caf82" />
+            <MacroBar label="Carbs" value={totals.carbs} goal={goals.carbs} unit="g" color="#3a9bd5" />
+            <MacroBar label="Fat" value={totals.fat} goal={goals.fat} unit="g" color="#c9a227" />
           </div>
         </div>
 

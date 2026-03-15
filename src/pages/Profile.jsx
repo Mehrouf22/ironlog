@@ -7,6 +7,39 @@ export default function Profile() {
   const user = JSON.parse(localStorage.getItem('il_user') || '{}')
   const [name, setName] = useState(user.name || '')
 
+  const stats = (() => {
+    try {
+      const history = JSON.parse(localStorage.getItem('il_history') || '{}')
+      const totalSessions = Object.values(history).flat().length
+      
+      const prs = JSON.parse(localStorage.getItem('il_prs') || '{}')
+      const totalPRs = Object.keys(prs).length
+
+      const attendance = JSON.parse(localStorage.getItem('il_attendance') || '[]')
+      // Simple streak logic for display
+      let currentStreak = 0
+      let checkDate = new Date()
+      while (true) {
+        const dateStr = checkDate.toISOString().slice(0, 10)
+        if (attendance.includes(dateStr)) {
+          currentStreak++
+          checkDate.setDate(checkDate.getDate() - 1)
+        } else {
+          // If today isn't logged yet, allow streak to continue from yesterday
+          if (currentStreak === 0 && dateStr === new Date().toISOString().slice(0, 10)) {
+            checkDate.setDate(checkDate.getDate() - 1)
+            continue
+          }
+          break
+        }
+      }
+
+      return { totalSessions, totalPRs, currentStreak }
+    } catch {
+      return { totalSessions: 0, totalPRs: 0, currentStreak: 0 }
+    }
+  })()
+
   function logout() {
     localStorage.removeItem('il_auth')
     localStorage.removeItem('il_user')
@@ -63,15 +96,15 @@ export default function Profile() {
           <div className="section-label">Your Stats</div>
           <div className="profile-stats">
             <div className="card profile-stat">
-              <div className="stat-num">6</div>
+              <div className="stat-num">{stats.currentStreak}</div>
               <div className="stat-label">Day Streak</div>
             </div>
             <div className="card profile-stat">
-              <div className="stat-num">24</div>
+              <div className="stat-num">{stats.totalSessions}</div>
               <div className="stat-label">Sessions</div>
             </div>
             <div className="card profile-stat">
-              <div className="stat-num">6</div>
+              <div className="stat-num">{stats.totalPRs}</div>
               <div className="stat-label">PRs Set</div>
             </div>
           </div>
