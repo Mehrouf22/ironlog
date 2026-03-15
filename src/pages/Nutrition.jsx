@@ -186,9 +186,9 @@ export default function Nutrition() {
           <div className="section-label" style={{ marginBottom: '1rem' }}>Today's Macros</div>
           <div className="macro-grid">
             <MacroBar label="Calories" value={totals.kcal} goal={goals.kcal} unit="kcal" />
-            <MacroBar label="Protein" value={totals.protein} goal={goals.protein} unit="g" color="#4caf82" />
-            <MacroBar label="Carbs" value={totals.carbs} goal={goals.carbs} unit="g" color="#3a9bd5" />
-            <MacroBar label="Fat" value={totals.fat} goal={goals.fat} unit="g" color="#c9a227" />
+            <MacroBar label="Protein" value={totals.protein} goal={goals.protein} unit="g" color="#ffffff" />
+            <MacroBar label="Carbs" value={totals.carbs} goal={goals.carbs} unit="g" color="#888888" />
+            <MacroBar label="Fat" value={totals.fat} goal={goals.fat} unit="g" color="#444444" />
           </div>
         </div>
 

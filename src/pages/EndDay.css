@@ -9,7 +9,7 @@
 }
 
 .end-day {
-  background: linear-gradient(180deg, var(--bg) 0%, #151515 100%);
+  background: var(--bg-base);
 }
 
 .text-accent {

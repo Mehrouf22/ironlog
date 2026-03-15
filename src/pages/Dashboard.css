@@ -1,6 +1,4 @@
-/* Dashboard Styles */
 
-.dashboard { }
 
 .dash-header {
   display: flex;
@@ -46,7 +44,7 @@
 
 .dash-avatar:hover {
   background: var(--accent);
-  color: #fff;
+  color: #000;
 }
 
 /* Section */
@@ -128,8 +126,8 @@
   transition: width 0.8s ease;
 }
 
-.progress-bar__fill--blue   { background: #3a9bd5; }
-.progress-bar__fill--green  { background: #2e7d52; }
+.progress-bar__fill--blue   { background: var(--accent); }
+.progress-bar__fill--green  { background: var(--accent-dim); }
 
 /* Health Grid */
 .health-grid {

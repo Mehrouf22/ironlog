@@ -17,7 +17,7 @@
 .heat-cell {
   width: 12px;
   height: 12px;
-  background-color: var(--card-bg); /* Use base card bg for empty cells */
+  background-color: var(--bg-card); /* Use base card bg for empty cells */
   border-radius: 2px;
   border: 1px solid var(--border);
 }

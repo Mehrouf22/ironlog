@@ -79,8 +79,8 @@
 }
 
 .note-card--highlight {
-  border-left: 2px solid #c9a227;
-  background: rgba(201, 162, 39, 0.04);
+  border-left: 2px solid #ffffff;
+  background: rgba(255, 255, 255, 0.04);
 }
 
 .note-card--pinned {

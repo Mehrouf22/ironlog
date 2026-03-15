@@ -8,31 +8,31 @@
 /* ---- Design Tokens ---- */
 :root {
   /* Backgrounds */
-  --bg-base:     #080808;
-  --bg-card:     #111111;
-  --bg-elevated: #1a1a1a;
-  --bg-input:    #141414;
+  --bg-base:     #000000;
+  --bg-card:     #0a0a0a;
+  --bg-elevated: #111111;
+  --bg-input:    #0f0f0f;
 
-  /* Brand Accent */
-  --accent:        #e05c00;
-  --accent-dim:    #b84a00;
-  --accent-glow:   rgba(224, 92, 0, 0.15);
-  --accent-subtle: rgba(224, 92, 0, 0.08);
+  /* Brand Accent - Pure B&W */
+  --accent:        #ffffff;
+  --accent-dim:    #cccccc;
+  --accent-glow:   rgba(255, 255, 255, 0.15);
+  --accent-subtle: rgba(255, 255, 255, 0.08);
 
   /* Text */
-  --text-primary:   #f0ede8;
-  --text-secondary: #888888;
-  --text-muted:     #444444;
-  --text-accent:    #e05c00;
+  --text-primary:   #ffffff;
+  --text-secondary: #a0a0a0;
+  --text-muted:     #666666;
+  --text-accent:    #ffffff;
 
   /* Borders */
   --border:       #1e1e1e;
   --border-light: #2a2a2a;
 
-  /* Success / Warning / Danger */
-  --success: #2e7d52;
-  --warning: #c47d00;
-  --danger:  #c0392b;
+  /* Success / Warning / Danger - Cleaned for B&W focus */
+  --success: #ffffff;
+  --warning: #888888;
+  --danger:  #ff4444;
 
   /* Spacing Scale */
   --space-1:  4px;
