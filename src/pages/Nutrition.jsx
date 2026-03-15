@@ -1,14 +1,10 @@
 import { useState } from 'react'
 import './Nutrition.css'
 
-const MEALS = ['Breakfast', 'Lunch', 'Dinner', 'Snack']
+// Initial default categories
+const DEFAULT_MEALS = { Breakfast: [], Lunch: [], Dinner: [], Snack: [] }
 
-const DEMO_FOOD = {
-  Breakfast: [],
-  Lunch: [],
-  Dinner: [],
-  Snack: [],
-}
+
 
 const DEFAULT_GOALS = { kcal: 2400, protein: 160, carbs: 250, fat: 70 }
 
@@ -18,12 +14,13 @@ export default function Nutrition() {
       const saved = localStorage.getItem('il_nutrition_log')
       const today = new Date().toISOString().slice(0, 10)
       const data = saved ? JSON.parse(saved) : null
-      if (data && data.date === today) return data.log
-      return DEMO_FOOD
+      if (data && data.date === today && data.log) return data.log
+      return DEFAULT_MEALS
     } catch {
-      return DEMO_FOOD
+      return DEFAULT_MEALS
     }
   })
+  const [newMealName, setNewMealName] = useState('')
   const [water, setWater] = useState(() => {
     try {
       const saved = localStorage.getItem('il_nutrition_water')
@@ -107,11 +104,33 @@ export default function Nutrition() {
     localStorage.setItem('il_nutrition_log', JSON.stringify({ date: new Date().toISOString().slice(0, 10), log: newLog }))
   }
 
+  function addMealGroup() {
+    if (!newMealName.trim()) return
+    const categoryName = newMealName.trim()
+    if (log[categoryName]) {
+      alert("Category already exists!")
+      return
+    }
+    const newLog = { ...log, [categoryName]: [] }
+    setLog(newLog)
+    localStorage.setItem('il_nutrition_log', JSON.stringify({ date: new Date().toISOString().slice(0, 10), log: newLog }))
+    setNewMealName('')
+  }
+
+  function deleteMealGroup(meal) {
+    if (confirm(`Delete the entire "${meal}" group?`)) {
+      const newLog = { ...log }
+      delete newLog[meal]
+      setLog(newLog)
+      localStorage.setItem('il_nutrition_log', JSON.stringify({ date: new Date().toISOString().slice(0, 10), log: newLog }))
+    }
+  }
+
   function resetNutrition() {
     if (confirm("Are you sure you want to reset today's nutrition?")) {
-      setLog(DEMO_FOOD)
+      setLog(DEFAULT_MEALS)
       setWater(0)
-      localStorage.setItem('il_nutrition_log', JSON.stringify({ date: new Date().toISOString().slice(0, 10), log: DEMO_FOOD }))
+      localStorage.setItem('il_nutrition_log', JSON.stringify({ date: new Date().toISOString().slice(0, 10), log: DEFAULT_MEALS }))
       localStorage.setItem('il_nutrition_water', JSON.stringify({ date: new Date().toISOString().slice(0, 10), water: 0 }))
     }
   }
@@ -199,11 +218,14 @@ export default function Nutrition() {
         <hr className="divider" />
 
         {/* Meal logs */}
-        {MEALS.map(meal => (
+        {Object.keys(log).map(meal => (
           <div key={meal} style={{ marginBottom: '1.5rem' }}>
             <div className="meal-header">
-              <h3 className="meal-title">{meal}</h3>
-              <button className="btn btn-text btn-sm" onClick={() => setAdding(meal)}>+ Add</button>
+              <div style={{ display: 'flex', alignItems: 'center', gap: '0.5rem' }}>
+                <h3 className="meal-title">{meal}</h3>
+                <button className="btn btn-text btn-sm" style={{ color: 'var(--text-muted)', padding: 0 }} onClick={() => deleteMealGroup(meal)} title="Delete Group">✕</button>
+              </div>
+              <button className="btn btn-text btn-sm" onClick={() => setAdding(meal)}>+ Add Food</button>
             </div>
 
             <div className="food-list">
@@ -239,6 +261,18 @@ export default function Nutrition() {
             )}
           </div>
         ))}
+
+        <div className="card" style={{ marginTop: '2rem', borderStyle: 'dashed' }}>
+           <div className="section-label" style={{ marginBottom: '0.5rem' }}>Add New Meal Group</div>
+           <div style={{ display: 'flex', gap: '0.5rem' }}>
+             <input 
+               placeholder="e.g. Pre-workout, Afternoon Tea..." 
+               value={newMealName}
+               onChange={e => setNewMealName(e.target.value)}
+             />
+             <button className="btn btn-primary btn-sm" onClick={addMealGroup}>Create</button>
+           </div>
+        </div>
 
       </div>
     </div>
