@@ -3,6 +3,7 @@ import './Layout.css'
 
 const NAV_ITEMS = [
   { to: '/dashboard', label: 'Home', icon: HomeIcon },
+  { to: '/history',   label: 'History', icon: HistoryIcon },
   { to: '/log',       label: 'Log',  icon: LogIcon  },
   { to: '/prs',       label: 'PRs',  icon: TrophyIcon },
   { to: '/notes',     label: 'Notes', icon: NoteIcon },
@@ -63,6 +64,14 @@ function BoardIcon() {
   return (
     <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round">
       <path d="M18 20V10M12 20V4M6 20v-6"/>
+    </svg>
+  )
+}
+function HistoryIcon() {
+  return (
+    <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round">
+      <circle cx="12" cy="12" r="10"/>
+      <polyline points="12 6 12 12 16 14"/>
     </svg>
   )
 }

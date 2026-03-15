@@ -14,6 +14,7 @@ import Nutrition from './pages/Nutrition'
 import Timer from './pages/Timer'
 import Schedule from './pages/Schedule'
 import Profile from './pages/Profile'
+import History from './pages/History'
 import EndDay from './pages/EndDay'
 import Attendance from './pages/Attendance'
 
@@ -43,6 +44,10 @@ function App() {
         <Route
           path="/dashboard"
           element={<PrivateRoute><Layout><Dashboard /></Layout></PrivateRoute>}
+        />
+        <Route
+          path="/history"
+          element={<PrivateRoute><Layout><History /></Layout></PrivateRoute>}
         />
         <Route
           path="/log"
