@@ -41,9 +41,37 @@ export default function Dashboard() {
     }
   })
 
+  const [supps, setSupps] = useState(() => {
+    try {
+      const saved = localStorage.getItem('il_nutrition_supps')
+      const todayString = new Date().toISOString().slice(0, 10)
+      const data = saved ? JSON.parse(saved) : null
+      if (data && data.date === todayString) return data.supps || []
+      return []
+    } catch {
+      return []
+    }
+  })
+
+  const [meds, setMeds] = useState(() => {
+    try {
+      const saved = localStorage.getItem('il_nutrition_meds')
+      const todayString = new Date().toISOString().slice(0, 10)
+      const data = saved ? JSON.parse(saved) : null
+      if (data && data.date === todayString) return data.meds || []
+      return []
+    } catch {
+      return []
+    }
+  })
+
 
   const waterProgress = Math.round((water.cups / water.goal) * 100)
   const calProgress = Math.round((calories.eaten / calories.goal) * 100)
+
+  const medTaken = meds.filter(m => m.taken).length
+  const medTotal = meds.length
+  const medProgress = medTotal > 0 ? Math.round((medTaken / medTotal) * 100) : 0
 
   return (
     <div className="dashboard page">
@@ -97,10 +125,10 @@ export default function Dashboard() {
               <div className="health-card__top">
                 <span className="health-icon">💧</span>
                 <div>
-                  <div className="stat-num" style={{ fontSize: '1.5rem' }}>
-                    {water.cups}<span className="stat-unit">/{water.goal}</span>
+                  <div className="stat-num" style={{ fontSize: '1.25rem' }}>
+                    {water.cups}<span className="stat-unit" style={{ fontSize: '0.8rem', opacity: 0.6 }}>/{water.goal}</span>
                   </div>
-                  <div className="stat-label">Cups Water</div>
+                  <div className="stat-label">Water</div>
                 </div>
               </div>
               <div className="progress-bar">
@@ -113,19 +141,51 @@ export default function Dashboard() {
               <div className="health-card__top">
                 <span className="health-icon">🍎</span>
                 <div>
-                  <div className="stat-num" style={{ fontSize: '1.5rem' }}>
-                    {calories.eaten}<span className="stat-unit">kcal</span>
+                  <div className="stat-num" style={{ fontSize: '1.25rem' }}>
+                    {calories.eaten}<span className="stat-unit" style={{ fontSize: '0.8rem', opacity: 0.6 }}>kcal</span>
                   </div>
-                  <div className="stat-label">of {calories.goal} goal</div>
+                  <div className="stat-label">Cals</div>
                 </div>
               </div>
               <div className="progress-bar">
                 <div className="progress-bar__fill progress-bar__fill--green" style={{ width: `${calProgress}%` }} />
               </div>
             </div>
+
+            {/* Supplements */}
+            <div className="card health-card">
+              <div className="health-card__top">
+                <span className="health-icon">💊</span>
+                <div>
+                  <div className="stat-num" style={{ fontSize: '1.25rem' }}>
+                    {supps.length}
+                  </div>
+                  <div className="stat-label">Supps</div>
+                </div>
+              </div>
+              <p className="text-dim" style={{ fontSize: '0.7rem', marginTop: '0.25rem' }}>
+                {supps.length > 0 ? supps.map(s => s.name).join(', ') : 'None taken'}
+              </p>
+            </div>
+
+            {/* Medicine */}
+            <div className="card health-card">
+              <div className="health-card__top">
+                <span className="health-icon">🩺</span>
+                <div>
+                  <div className="stat-num" style={{ fontSize: '1.25rem' }}>
+                    {medTaken}<span className="stat-unit" style={{ fontSize: '0.8rem', opacity: 0.6 }}>/{medTotal}</span>
+                  </div>
+                  <div className="stat-label">Meds</div>
+                </div>
+              </div>
+              <div className="progress-bar">
+                <div className="progress-bar__fill" style={{ width: `${medProgress}%`, background: '#fff' }} />
+              </div>
+            </div>
           </div>
           <Link to="/nutrition" className="btn btn-ghost btn-sm" style={{ marginTop: '0.75rem' }}>
-            Log food + water →
+            Log detailed health data →
           </Link>
         </section>
 
